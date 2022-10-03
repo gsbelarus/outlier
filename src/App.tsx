@@ -72,6 +72,24 @@ function App() {
           data.map( ({v, outlier}, idx) => <div className={outlier ? 'outlier' : ''} key={idx}>{v}</div> )
         }
       </div>
+      <div className="Doc">
+         <h2>Statistical detection of outliers</h2>
+         <ol>
+            <li>Click START button to activate automatic random input generation.</li> 
+            <li> Numbers are added with frequency one per second.</li>
+            <li> First 100 numbers are added at once. In such way we guarantee initial statistics. </li>
+            <li> Normal distribution for random numbers is used.</li>
+            <li> Outliers are those numbers which lies below lower fence or above upper fence. Upper fence calculated as Q3 + (0.5 * IQR), and lower fence  Q1 – (0.5 * IQR). Where Q1, Q3 are appropriate quartiles and IQR = Q3 - Q1.</li>
+            <li> Only last five minutes of data are stored. Older data is discarded.</li>
+            <li> Outliers are displayed in red.</li>
+         </ol>
+
+         <h2>Sources</h2>
+         <ol>
+            <li> All presentational part is in App.ts and App.css files.</li>
+            <li> Consumer class is in src/od.ts. It has accept method which adds given number to the internal array, recalculates statistics and returns true or false depending whether given number is outlier or not.</li>
+         </ol>
+      </div>
     </div>
   );
 }

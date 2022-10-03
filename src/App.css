@@ -3,6 +3,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: row;
+  gap: 16px;
   align-items: flex-start;
   justify-content: top;
   font-size: calc(10px + 2vmin);
@@ -31,7 +32,6 @@
   border: 2px solid gray;
   border-radius: 8px;
   min-width: 200px;
-  margin-right: 16px;
 }
 
 .Toolbar div {
@@ -66,7 +66,6 @@
   border: 2px solid gray;
   border-radius: 8px;
   min-width: 200px;
-  margin-right: 16px;
 }
 
 .Stat div span:first-of-type {
@@ -82,4 +81,12 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end; 
+}
+
+.Doc {
+  font-size: 18px;
+}
+
+.Doc h2 {
+  margin-top: 0;
 }
