@@ -31,7 +31,7 @@
   padding: 8px;
   border: 2px solid gray;
   border-radius: 8px;
-  min-width: 200px;
+  min-width: 240px;
 }
 
 .Toolbar div {
@@ -53,8 +53,12 @@
   color: gray;
 }
 
-.outlier {
+.rangeOutlier {
   color: red;
+}
+
+.zScoreOutlier {
+  color: blueviolet;
 }
 
 .Stat {
@@ -65,7 +69,7 @@
   padding: 8px;
   border: 2px solid gray;
   border-radius: 8px;
-  min-width: 200px;
+  min-width: 240px;
 }
 
 .Stat div span:first-of-type {

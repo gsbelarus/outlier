@@ -3,12 +3,19 @@ interface INode {
   v: number;
 };
 
+export interface IOutlierResult {
+  zScoreOutlier: boolean;
+  rangeOutlier: boolean;
+};
+
 export class Consumer {
   data: INode[] = [];
   median: number = 0;
   q1: number = 0;
   q3: number = 0;
   iqr: number = 0;
+  mean: number = 0;
+  sd: number = 0;
 
   private findIndex(l: number, h: number, v: number): number {
     const step = Math.floor((h - l) / 2);
@@ -38,14 +45,7 @@ export class Consumer {
     }
   }
 
-  accept(v: number) {
-    const upperFence = this.q3 + (0.5 * this.iqr);
-    const lowerFence = this.q1 - (0.5 * this.iqr);
-
-    const outlier = this.data.length < 10 
-      ? false 
-      : (v < lowerFence || v > upperFence); 
-
+  accept(v: number): IOutlierResult {
     const newItem = { 
       time: new Date().getTime(), 
       v,
@@ -71,8 +71,26 @@ export class Consumer {
     this.q1 = this.data[q1Idx].v;
     this.q3 = this.data[q3Idx].v;
     this.iqr = this.q3 - this.q1;
+    this.mean = Math.round(this.data.reduce( (p, { v }) => p + v, 0 ) / this.data.length * 1000) / 1000;
+    if (this.data.length > 1) {
+      this.sd = Math.round(Math.sqrt(this.data.reduce( (p, { v }) => p + (v - this.mean) ** 2, 0 ) / (this.data.length - 1)) * 1000) / 1000;
+    } else {
+      this.sd = Math.round(Math.sqrt(this.data.reduce( (p, { v }) => p + (v - this.mean) ** 2, 0 ) / this.data.length) * 1000) / 1000;
+    }
 
-    return outlier;
+    const zScoreOutlier = (Math.abs(v - this.mean) / this.sd) > 2;
+
+    const upperFence = this.q3 + (1.5 * this.iqr);
+    const lowerFence = this.q1 - (1.5 * this.iqr);
+
+    const rangeOutlier = this.data.length < 10 
+      ? false 
+      : (v < lowerFence || v > upperFence);     
+
+    return {
+      rangeOutlier,
+      zScoreOutlier
+    };
   }
 
   clear() {
@@ -81,5 +99,7 @@ export class Consumer {
     this.q1 = 0;
     this.q3 = 0;
     this.iqr = 0;
+    this.mean = 0;
+    this.sd = 0;
   }
 }
