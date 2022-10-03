@@ -11,4 +11,4 @@
 ## Sources
 
 1. All presentational part is in App.ts and App.css files.
-2. Consumer class is in src/od.ts. It has accept method which adds given number to the internal array, recalculates statistics and returns true or false depending whether given number is outlier or not.
+2. Consumer class is in src/od.ts. It has the accept method which adds given number to the internal array, recalculates statistics and returns true or false depending on whether given number is an outlier or not.
